@@ -2,9 +2,19 @@
 
 Application de bureau pour saisir des notes, calculer les moyennes et enregistrer les résultats dans un fichier Excel.
 
-> Statut : spécification du MVP. Le code reste à développer.
+> Statut : MVP fonctionnel. Voir le [wiki](https://github.com/iliasgws/Projet-Maths-Techno-GWS/wiki) pour le fonctionnement détaillé.
 
 ![Maquette de l'application](./maquette.png)
+
+## Utilisation de l'IA
+
+Ce projet a été réalisé avec l'aide d'une IA (assistant de code) :
+
+- **Code** : l'application (interface Tkinter, lecture/écriture Excel, validation) a été générée puis testée avec l'aide d'un assistant IA, sous la direction de l'auteur ;
+- **Images** : la maquette et l'icône de l'application sont générées par IA (ChatGPT / DALL-E) ;
+- **Documentation** : ce README et le wiki ont été rédigés avec l'aide d'une IA.
+
+L'IA a servi d'outil d'accélération. Les choix de fonctionnalités (périmètre du MVP, règles de validation, matières et classes) restent ceux de l'auteur.
 
 ## Le problème
 
