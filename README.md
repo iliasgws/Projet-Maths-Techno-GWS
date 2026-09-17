@@ -4,7 +4,7 @@ Application de bureau pour saisir des notes, calculer les moyennes et enregistre
 
 > Statut : spécification du MVP. Le code reste à développer.
 
-![Maquette de l'application](./Python_program_calculates_school%E2%80%A6_2K_20260917105853.jpeg)
+![Maquette de l'application](./maquette.png)
 
 ## Le problème
 
