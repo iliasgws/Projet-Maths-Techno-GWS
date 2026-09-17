@@ -1,4 +1,5 @@
-Projet Maths-Techno : une application pour gérer les notes
+# Projet Maths-Techno :
+## une application pour gérer les notes
 
 Pour notre projet, nous sommes partis d’un problème courant à l’école : quand on saisit directement des notes dans Excel, une simple erreur de frappe peut fausser une moyenne ou modifier une formule sans qu’on s’en rende compte.
 
