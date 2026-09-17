@@ -56,11 +56,12 @@ jobs:
           [Desktop Entry]
           Name=Projet Maths-Techno
           Exec=AppRun
-          Icon=application-vnd.mozilla.xul+xml
+          Icon=ProjetMathsTechno
           Type=Application
           Categories=Education;
           EOF
           cp ProjetMathsTechno.desktop AppDir/
+          cp icon.png AppDir/ProjetMathsTechno.png
           # tool AppImage officiel
           wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
           chmod +x appimagetool-x86_64.AppImage
