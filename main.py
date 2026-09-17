@@ -13,6 +13,8 @@ import openpyxl
 FICHE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "notes.xlsx")
 ENTETES = ["ID", "Nom", "Classe", "Mathematiques", "Sciences", "Histoire", "Moyenne"]
 MATIERES = ["Mathematiques", "Sciences", "Histoire"]
+CLASSES = ["CE6", "1AC", "2AC", "3AC", "TCS", "1BAC", "2BAC"]
+LETTRES = ["A", "B", "C"]
 
 
 def parse_note(texte):
@@ -118,8 +120,11 @@ class Application(tk.Tk):
         self.champ_nom = ttk.Entry(form, width=30)
         self.champ_nom.grid(row=0, column=1, padx=6, pady=4)
         ttk.Label(form, text="Classe :").grid(row=1, column=0, sticky="e", padx=6, pady=4)
-        self.champ_classe = ttk.Entry(form, width=30)
-        self.champ_classe.grid(row=1, column=1, padx=6, pady=4)
+        self.champ_classe = ttk.Combobox(form, values=CLASSES, state="readonly", width=8)
+        self.champ_classe.grid(row=1, column=1, sticky="w", padx=6, pady=4)
+        ttk.Label(form, text="Lettre :").grid(row=1, column=2, sticky="e", padx=6, pady=4)
+        self.champ_lettre = ttk.Combobox(form, values=LETTRES, state="readonly", width=4)
+        self.champ_lettre.grid(row=1, column=3, sticky="w", padx=6, pady=4)
 
         self.champs_notes = {}
         for i, matiere in enumerate(MATIERES):
@@ -168,8 +173,8 @@ class Application(tk.Tk):
         self.selection_id = int(valeurs[0])
         self.champ_nom.delete(0, "end")
         self.champ_nom.insert(0, valeurs[1])
-        self.champ_classe.delete(0, "end")
-        self.champ_classe.insert(0, valeurs[2])
+        self.champ_classe.set(valeurs[2].split("-")[0])
+        self.champ_lettre.set(valeurs[2].split("-")[1] if "-" in valeurs[2] else "")
         for i, matiere in enumerate(MATIERES):
             self.champs_notes[matiere].delete(0, "end")
             self.champs_notes[matiere].insert(0, str(valeurs[3 + i]))
@@ -177,7 +182,8 @@ class Application(tk.Tk):
     def vider(self):
         self.selection_id = None
         self.champ_nom.delete(0, "end")
-        self.champ_classe.delete(0, "end")
+        self.champ_classe.set("")
+        self.champ_lettre.set("")
         for champ in self.champs_notes.values():
             champ.delete(0, "end")
         self.tree.selection_remove(self.tree.selection())
@@ -187,10 +193,14 @@ class Application(tk.Tk):
         """Verifie le formulaire. Retourne (donnees, None) ou (None, message)."""
         nom = self.champ_nom.get().strip()
         classe = self.champ_classe.get().strip()
+        lettre = self.champ_lettre.get().strip()
         if not nom:
             return None, "Le nom est vide."
         if not classe:
-            return None, "La classe est vide."
+            return None, "La classe n'est pas choisie."
+        if not lettre:
+            return None, "La lettre n'est pas choisie."
+        classe = "%s-%s" % (classe, lettre)
         notes = {}
         for matiere in MATIERES:
             note, message = parse_note(self.champs_notes[matiere].get())
