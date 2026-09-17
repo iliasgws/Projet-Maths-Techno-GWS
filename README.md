@@ -101,12 +101,14 @@ Le MVP sera considéré comme terminé lorsque les cas suivants fonctionneront :
 - `ttk.Treeview` pour le tableau
 - openpyxl pour lire et modifier le fichier Excel
 
-## Structure prévue
+## Structure
 
 ```text
 Projet-Maths-Techno-GWS/
 ├── main.py
 ├── requirements.txt
+├── assets/
+│   └── icon.ico          # icône de la fenêtre
 ├── data/
 │   └── notes.xlsx        # créé automatiquement
 └── README.md

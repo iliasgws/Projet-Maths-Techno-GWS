@@ -111,6 +111,11 @@ class Application(tk.Tk):
         super().__init__()
         self.title("Projet Maths-Techno")
         self.geometry("820x520")
+        try:
+            self.iconbitmap(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                         "assets", "icon.ico"))
+        except tk.TclError:
+            pass
         self.selection_id = None
 
         # --- Formulaire ---
