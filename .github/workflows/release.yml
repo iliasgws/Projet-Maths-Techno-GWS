@@ -1,0 +1,101 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            nom: windows
+            sortie: ProjetMathsTechno.exe
+          - os: macos-latest
+            nom: macos
+            sortie: ProjetMathsTechno
+          - os: ubuntu-latest
+            nom: linux
+            sortie: ProjetMathsTechno
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt pyinstaller
+
+      - name: Build (Windows)
+        if: matrix.nom == 'windows'
+        run: pyinstaller --onefile --windowed --name ProjetMathsTechno main.py
+
+      - name: Build (macOS)
+        if: matrix.nom == 'macos'
+        run: pyinstaller --onefile --windowed --name ProjetMathsTechno main.py
+
+      - name: Build (Linux)
+        if: matrix.nom == 'linux'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libfuse2 file
+          pyinstaller --onefile --name ProjetMathsTechno main.py
+          # AppDir pour l'AppImage
+          mkdir -p AppDir/usr/bin
+          cp dist/ProjetMathsTechno AppDir/usr/bin/
+          ln -s usr/bin/ProjetMathsTechno AppDir/AppRun
+          cat > ProjetMathsTechno.desktop <<'EOF'
+          [Desktop Entry]
+          Name=Projet Maths-Techno
+          Exec=AppRun
+          Icon=application-vnd.mozilla.xul+xml
+          Type=Application
+          Categories=Education;
+          EOF
+          cp ProjetMathsTechno.desktop AppDir/
+          # tool AppImage officiel
+          wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
+          ./appimagetool-x86_64.AppImage --appimage-extract-and-run AppDir ProjetMathsTechno-x86_64.AppImage
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ProjetMathsTechno-${{ matrix.nom }}
+          path: |
+            dist/ProjetMathsTechno.exe
+            dist/ProjetMathsTechno
+            ProjetMathsTechno-x86_64.AppImage
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: artifacts
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Build ${{ github.run_number }}
+          body: |
+            Build automatique depuis main (${{ github.sha }}).
+
+            - Windows : ProjetMathsTechno.exe
+            - macOS : ProjetMathsTechno (binaire, terminal : chmod +x puis double-clic)
+            - Linux : ProjetMathsTechno-x86_64.AppImage
+          files: |
+            artifacts/ProjetMathsTechno.exe
+            artifacts/ProjetMathsTechno
+            artifacts/ProjetMathsTechno-x86_64.AppImage
