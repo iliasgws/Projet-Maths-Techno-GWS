@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+    branches: [dev, main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Syntax check
+        run: python -m py_compile main.py
+
+      - name: Smoke test (logique, sans interface)
+        run: |
+          python - <<'EOF'
+          import main, os
+
+          if os.path.exists(main.FICHE):
+              os.remove(main.FICHE)
+          main.creer_fichier()
+          assert os.path.exists(main.FICHE)
+
+          # ajout + moyenne
+          main.sauver_ligne(["Alice", "TCS-A", 15, 18, 10])
+          main.sauver_ligne(["Bob", "TCS-B", 12, 14, 16])
+          lignes = main.lire_lignes()
+          assert lignes[0][6] == 14.33, lignes
+          assert lignes[1][6] == 14.0, lignes
+
+          # validation des notes : 10, 15,5 et 20 acceptes ; texte / negatif / >20 refuses
+          for t in ["10", "15,5", "20"]:
+              assert main.parse_note(t)[1] is None
+          for t in ["abc", "-1", "20.1", ""]:
+              assert main.parse_note(t)[1] is not None, t
+
+          # modification
+          main.sauver_ligne(["Alice", "TCS-A", 20, 20, 20], ancien_id=1)
+          assert main.lire_lignes()[0][6] == 20.0
+
+          # suppression + ID suivant
+          assert main.supprimer_ligne(2)
+          assert main.lire_lignes() == [[1, "Alice", "TCS-A", 20, 20, 20, 20.0]]
+
+          print("Smoke test OK")
+          EOF
