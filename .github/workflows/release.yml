@@ -85,6 +85,9 @@ jobs:
           merge-multiple: true
           path: artifacts
 
+      - name: Lister les artefacts
+        run: ls -laR artifacts
+
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
@@ -96,7 +99,4 @@ jobs:
             - Windows : ProjetMathsTechno.exe
             - macOS : ProjetMathsTechno (binaire, terminal : chmod +x puis double-clic)
             - Linux : ProjetMathsTechno-x86_64.AppImage
-          files: |
-            artifacts/ProjetMathsTechno.exe
-            artifacts/ProjetMathsTechno
-            artifacts/ProjetMathsTechno-x86_64.AppImage
+          files: artifacts/*
