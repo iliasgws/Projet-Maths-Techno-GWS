@@ -85,8 +85,11 @@ jobs:
           merge-multiple: true
           path: artifacts
 
-      - name: Lister les artefacts
-        run: ls -laR artifacts
+      - name: Aplatir les artefacts
+        run: |
+          find artifacts -type f -exec mv {} artifacts/ \;
+          rmdir artifacts/dist 2>/dev/null || true
+          ls -la artifacts
 
       - name: Create release
         uses: softprops/action-gh-release@v2
