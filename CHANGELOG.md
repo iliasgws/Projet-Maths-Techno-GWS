@@ -14,6 +14,7 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 ### Change
 
 - README aligne sur le fonctionnement reel de l'application : choix de la classe et de la lettre en listes, format de classe `2BAC-B`, identifiant attribue automatiquement.
+- `AGENTS.md` : mention d'auteur remplacee par une formulation neutre (l'auteur du projet).
 
 ## [0.1.0] - 2026-09
 
