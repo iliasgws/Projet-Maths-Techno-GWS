@@ -8,8 +8,8 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 
 ### Ajoute
 
-- Documentation complete : README reecrit, guide de contribution, changelog, licence MIT et page GitHub Pages.
-- Workflow de deploiement de la page de documentation sur GitHub Pages.
+- Dossier `tests/` avec un test d'interface pilote par programme (13 cas, sans clics).
+- Workflow de release : executables Windows (`.exe`), macOS et Linux construits a chaque tag `v*` et publies en release GitHub.
 
 ### Change
 
