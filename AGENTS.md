@@ -23,6 +23,7 @@ Ce fichier s'adresse a tout agent (IA) travaillant dans ce depot. A lire avant l
 - Toute modification destinee a `main` passe par une pull request (`gh pr create`).
 - Les pull requests sont fusionnees par l'auteur du projet, sauf instruction explicite contraire dans la conversation.
 - Un commit par modification logique, messages courts en francais, sans em-dash.
+- Les commits faits par un agent sont attribues a Copilot App, pas a l'auteur du depot : passer l'identite sur la commande, par exemple `git -c user.name='Copilot App' -c user.email='223556219+Copilot@users.noreply.github.com' commit ...`. Dans ce cas, pas de trailer Co-authored-by (l'auteur est deja Copilot).
 
 ## Conventions de texte
 
