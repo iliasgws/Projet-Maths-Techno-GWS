@@ -23,10 +23,12 @@ Ce fichier s'adresse a tout agent (IA) travaillant dans ce depot. A lire avant l
 - Toute modification destinee a `main` passe par une pull request (`gh pr create`).
 - Les pull requests sont fusionnees par l'auteur du projet, sauf instruction explicite contraire dans la conversation.
 - Un commit par modification logique, messages courts en francais, sans em-dash.
+- Les commits faits par un agent sont attribues a Copilot App, pas a l'auteur du depot : passer l'identite sur la commande, par exemple `git -c user.name='Copilot App' -c user.email='223556219+Copilot@users.noreply.github.com' commit ...`. Dans ce cas, pas de trailer Co-authored-by (l'auteur est deja Copilot).
 
 ## Conventions de texte
 
 - Tous les textes du depot (README, CHANGELOG, wiki, commits, messages d'interface) sont en francais.
+- Ecrire le francais sans accents, comme dans ce fichier : pas de e aigu, grave ou circonflexe, pas de cedille. Le modele GLM 5.3 Flash a tendance a en remettre : verifier ses sorties et retirer les accents avant de committer.
 - Jamais d'em-dash (tiret cadratin) dans les textes du depot.
 
 ## Code
@@ -63,5 +65,6 @@ Ce fichier s'adresse a tout agent (IA) travaillant dans ce depot. A lire avant l
 ## Style de travail
 
 - Faire le minimum demande, proprement. Pas de fonctionnalite non demandee.
+- Utiliser les sous-agents quand cela a du sens : refactoring, modification touchant plusieurs fichiers, recherche large dans le depot, revue de code, builds ou tests longs. Garder dans le contexte principal les decisions, les petites modifications et la synthese des resultats.
 - Tester reellement (lancer le code, verifier le resultat) avant d'annoncer que c'est fait.
 - Signaler ce qui a ete verifie et ce qui ne l'a pas ete.
