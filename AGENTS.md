@@ -5,7 +5,7 @@ Ce fichier s'adresse a tout agent (IA) travaillant dans ce depot. A lire avant l
 ## Contexte du projet
 
 - Application de bureau (Python/Tkinter) qui sert d'intermediaire entre l'utilisateur et le fichier Excel `data/notes.xlsx` : saisie des notes, validation, calcul de la moyenne, enregistrement.
-- Projet scolaire (Maths-Techno, GWS). Auteur principal : Ilias Mouhcine.
+- Projet scolaire (Maths-Techno, GWS), maintenu par l'auteur du projet.
 - Pile : Python 3.10+, interface Tkinter avec `ttk.Treeview`, lecture/ecriture Excel via openpyxl (voir `requirements.txt`, seule dependance).
 - Fichiers utiles : `main.py` (application complete), `README.md` (documentation utilisateur), `CHANGELOG.md`, `CONTRIBUTING.md`.
 - Site de documentation : https://iliasgws.github.io/Projet-Maths-Techno-GWS/ (genere depuis `index.html` a la racine).
@@ -21,7 +21,7 @@ Ce fichier s'adresse a tout agent (IA) travaillant dans ce depot. A lire avant l
 - Branche de travail : `dev`. Les commits directs sur `dev` sont autorises.
 - Branche stable : `main`. Ne JAMAIS pousser directement sur `main`.
 - Toute modification destinee a `main` passe par une pull request (`gh pr create`).
-- Les pull requests sont fusionnees par l'auteur (Ilias), sauf instruction explicite contraire dans la conversation.
+- Les pull requests sont fusionnees par l'auteur du projet, sauf instruction explicite contraire dans la conversation.
 - Un commit par modification logique, messages courts en francais, sans em-dash.
 
 ## Conventions de texte
