@@ -66,5 +66,6 @@ Ce fichier s'adresse a tout agent (IA) travaillant dans ce depot. A lire avant l
 
 - Faire le minimum demande, proprement. Pas de fonctionnalite non demandee.
 - Utiliser les sous-agents quand cela a du sens : refactoring, modification touchant plusieurs fichiers, recherche large dans le depot, revue de code, builds ou tests longs. Garder dans le contexte principal les decisions, les petites modifications et la synthese des resultats.
+- Attention aux fuites de facturation des sous-agents : en BYOK, les taches exploratoires peuvent partir par defaut sur un modele distinct (type Claude Haiku) et consommer des credits personnels ou de l'organisation sans etre demande. Avant de lancer un sous-agent, verifier le modele utilise et le fixer explicitement si besoin. En cas de doute, faire la recherche directement dans le contexte principal.
 - Tester reellement (lancer le code, verifier le resultat) avant d'annoncer que c'est fait.
 - Signaler ce qui a ete verifie et ce qui ne l'a pas ete.
