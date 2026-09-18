@@ -1,130 +1,81 @@
 # Projet Maths-Techno
 
-Application de bureau pour saisir des notes, calculer les moyennes et enregistrer les résultats dans un fichier Excel.
-
-> Statut : MVP fonctionnel. Voir le [wiki](https://github.com/iliasgws/Projet-Maths-Techno-GWS/wiki) pour le fonctionnement détaillé.
+Application de bureau pour saisir les notes des eleves, calculer leur moyenne et les enregistrer dans un fichier Excel.
 
 ![Maquette de l'application](./maquette.png)
 
-## Utilisation de l'IA
+## Sommaire
 
-Ce projet a été réalisé avec l'aide d'une IA (assistant de code) :
+- [Pourquoi cette application](#pourquoi-cette-application)
+- [Fonctionnement](#fonctionnement)
+- [Donnees enregistrees](#donnees-enregistrees)
+- [Regles de saisie](#regles-de-saisie)
+- [Fichier de donnees](#fichier-de-donnees)
+- [Installation](#installation)
+- [Structure du depot](#structure-du-depot)
+- [Statut du projet](#statut-du-projet)
+- [Contribuer](#contribuer)
+- [Licence](#licence)
 
-- **Code** : l'application (interface Tkinter, lecture/écriture Excel, validation) a été générée puis testée avec l'aide d'un assistant IA, sous la direction de l'auteur ;
-- **Images** : la maquette et l'icône de l'application sont générées par IA (ChatGPT images 2.5 pour l'icone et Gemini nanobanana pour la maquette) ;
-- **Documentation** : ce README et le wiki ont été rédigés avec l'aide d'une IA.
+## Pourquoi cette application
 
-L'IA a servi d'outil d'accélération. Les choix de fonctionnalités (périmètre du MVP, règles de validation, matières et classes) restent ceux de l'auteur.
+Saisir les notes directement dans Excel expose a des erreurs : du texte a la place d'un nombre, une note hors limite, une formule effacee ou la mauvaise ligne modifiee. L'application sert d'intermediaire : elle verifie chaque donnee avant d'ecrire dans le fichier, qui reste la seule source de verite.
 
-## Le problème
+## Fonctionnement
 
-Saisir les notes directement dans Excel peut provoquer des erreurs : texte à la place d'une note, valeur hors limite, formule supprimée ou mauvaise ligne modifiée. L'application sert d'intermédiaire entre l'utilisateur et le fichier Excel afin de contrôler chaque donnée avant son enregistrement.
+La fenetre comporte un formulaire et un tableau :
 
-## Périmètre du MVP
+- **Formulaire** : le nom (champ texte), la classe (liste : `CE6`, `1AC`, `2AC`, `3AC`, `TCS`, `1BAC`, `2BAC`), la lettre (liste : `A`, `B`, `C`) et les trois notes sur 20 (mathematiques, sciences, histoire). La virgule decimale est acceptee, par exemple `12,5`.
+- **Boutons** : `Ajouter`, `Modifier`, `Supprimer` et `Vider` le formulaire.
+- **Tableau** : la liste complete des eleves avec leur moyenne, rechargee depuis Excel.
 
-La première version restera volontairement simple :
+Un clic sur une ligne recopie l'eleve dans le formulaire : il suffit de corriger puis de cliquer sur `Modifier`, ou de cliquer sur `Supprimer`.
 
-- une application locale en Python avec Tkinter ;
-- un seul fichier Excel, `data/notes.xlsx` ;
-- une seule feuille, `Notes` ;
-- trois matières fixes : mathématiques, sciences et histoire ;
-- une moyenne simple, sans coefficient ;
-- l'ajout, la modification et la suppression d'un élève ;
-- un tableau dans l'application qui reprend le contenu du fichier Excel.
+L'eleve est stocke sous la forme `2BAC-B` (classe et lettre assemblees). L'interface n'est rafraichie qu'apres une sauvegarde reussie du fichier.
 
-La recherche, les graphiques, les bulletins PDF, les comptes utilisateurs, les coefficients et le travail à plusieurs ne font pas partie du MVP.
+## Donnees enregistrees
 
-## Données enregistrées
-
-Chaque élève correspond à une ligne de la feuille `Notes`.
+Chaque eleve correspond a une ligne de la feuille `Notes` du classeur `data/notes.xlsx`.
 
 | Colonne | Contenu |
 | --- | --- |
-| `ID` | numéro unique créé automatiquement |
-| `Nom` | nom complet de l'élève |
-| `Classe` | classe de l'élève |
-| `Mathématiques` | note sur 20 |
+| `ID` | numero unique attribue automatiquement a la creation |
+| `Nom` | nom complet de l'eleve |
+| `Classe` | classe et lettre de l'eleve, par exemple `2BAC-B` |
+| `Mathematiques` | note sur 20 |
 | `Sciences` | note sur 20 |
 | `Histoire` | note sur 20 |
-| `Moyenne` | moyenne calculée et arrondie à deux décimales |
+| `Moyenne` | moyenne simple, arrondie a deux decimales |
 
-La moyenne est calculée ainsi :
-
-```text
-moyenne = (mathématiques + sciences + histoire) / 3
-```
-
-Un même nom peut exister dans plusieurs classes, mais la combinaison `Nom + Classe` doit rester unique.
-
-## Interface prévue
-
-La fenêtre contient :
-
-- deux champs texte : `Nom` et `Classe` ;
-- trois champs de note : `Mathématiques`, `Sciences` et `Histoire` ;
-- les boutons `Ajouter`, `Modifier`, `Supprimer` et `Vider` ;
-- un tableau affichant tous les élèves et leur moyenne.
-
-Quand l'utilisateur sélectionne une ligne du tableau, ses données sont recopiées dans le formulaire. Il peut alors les modifier ou supprimer l'élève concerné.
-
-## Règles de saisie
-
-Avant tout enregistrement, le programme vérifie que :
-
-- le nom et la classe ne sont pas vides ;
-- les trois notes sont renseignées ;
-- chaque note est un nombre compris entre 0 et 20 ;
-- les nombres décimaux avec une virgule, comme `12,5`, sont acceptés ;
-- l'élève n'existe pas déjà dans la même classe.
-
-Si une donnée est incorrecte, un message indique le champ à corriger. Aucune ligne ne doit alors être ajoutée ou modifiée.
-
-## Synchronisation avec Excel
-
-Au démarrage, l'application crée `data/notes.xlsx` s'il n'existe pas, puis charge son contenu dans le tableau.
-
-Pour chaque ajout, modification ou suppression, elle suit cet ordre :
-
-1. vérifier les données du formulaire ;
-2. calculer la moyenne ;
-3. enregistrer la modification dans Excel ;
-4. recharger le tableau depuis le fichier.
-
-L'interface n'est actualisée qu'après une sauvegarde réussie. Si le fichier est ouvert dans Excel, introuvable ou illisible, l'application affiche une erreur claire et reste ouverte.
-
-## Critères de réussite
-
-Le MVP sera considéré comme terminé lorsque les cas suivants fonctionneront :
-
-- une saisie valide apparaît dans Excel et dans le tableau ;
-- `10`, `15,5` et `20` sont acceptés comme notes ;
-- du texte, une note négative ou une note supérieure à 20 sont refusés ;
-- la moyenne affichée est correcte et arrondie à deux décimales ;
-- les données sont toujours présentes après la fermeture et le redémarrage de l'application ;
-- la modification et la suppression d'un élève produisent le même résultat dans Excel et à l'écran ;
-- une erreur d'accès au fichier affiche un message sans fermer brutalement le programme.
-
-## Technologies
-
-- Python 3.10 ou version plus récente
-- Tkinter pour l'interface
-- `ttk.Treeview` pour le tableau
-- openpyxl pour lire et modifier le fichier Excel
-
-## Structure
+La moyenne est calculee ainsi :
 
 ```text
-Projet-Maths-Techno-GWS/
-├── main.py
-├── requirements.txt
-├── assets/
-│   └── icon.ico          # icône de la fenêtre
-├── data/
-│   └── notes.xlsx        # créé automatiquement
-└── README.md
+moyenne = (mathematiques + sciences + histoire) / 3
 ```
 
-## Installation prévue
+## Regles de saisie
+
+Avant tout enregistrement, le programme verifie que :
+
+- le nom n'est pas vide ;
+- la classe et la lettre sont choisies dans les listes ;
+- les trois notes sont renseignees et comprises entre 0 et 20 ;
+- les decimaux avec virgule sont acceptes (`12,5`) ;
+- l'eleve n'existe pas deja dans la meme classe (unicite `Nom + Classe`).
+
+Si une donnee est incorrecte, un message designe le champ a corriger et rien n'est enregistre.
+
+## Fichier de donnees
+
+- Au premier lancement, l'application cree `data/notes.xlsx` avec l'entete.
+- A chaque ajout, modification ou suppression : verification des donnees, calcul de la moyenne, ecriture dans Excel, rechargement du tableau.
+- Si le fichier est ouvert dans Excel, introuvable ou illisible, l'application affiche une erreur claire et reste ouverte.
+
+Ce fichier contient des donnees personnelles : il n'est jamais commite (voir `.gitignore`).
+
+## Installation
+
+Prerequis : Python 3.10 ou plus recent. Sur certaines distributions Linux, le paquet `python3-tk` doit etre installe separement.
 
 ```bash
 git clone https://github.com/iliasgws/Projet-Maths-Techno-GWS.git
@@ -133,4 +84,31 @@ python -m pip install -r requirements.txt
 python main.py
 ```
 
-Sous certaines distributions Linux, Tkinter doit être installé séparément avec le paquet `python3-tk`.
+## Structure du depot
+
+```text
+Projet-Maths-Techno-GWS/
+├── main.py                 # application complete (logique + interface)
+├── requirements.txt        # openpyxl uniquement
+├── assets/                 # icones de la fenetre
+├── data/
+│   └── notes.xlsx          # cree automatiquement, jamais commite
+├── CHANGELOG.md            # historique des versions
+├── CONTRIBUTING.md         # guide de contribution
+├── LICENSE                 # licence MIT
+├── AGENTS.md               # consignes pour les agents (IA)
+├── index.html              # page du site GitHub Pages
+└── README.md
+```
+
+## Statut du projet
+
+Le MVP est fonctionnel : saisie, validation, calcul de la moyenne, enregistrement Excel, modification et suppression. Les evolutions passees et a venir sont listees dans le [CHANGELOG](CHANGELOG.md).
+
+## Contribuer
+
+Les contributions sont bienvenues. Consultez le [guide de contribution](CONTRIBUTING.md) pour le workflow (branches, pull requests), le style des commits et les verifications a passer avant de pousser.
+
+## Licence
+
+Distribue sous [licence MIT](LICENSE).
