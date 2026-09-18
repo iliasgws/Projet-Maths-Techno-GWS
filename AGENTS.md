@@ -47,7 +47,7 @@ Ce fichier s'adresse a tout agent (IA) travaillant dans ce depot. A lire avant l
 
 - Le README decrit le fonctionnement reel de l'application : le mettre a jour si le comportement change.
 - Toute modification visible par l'utilisateur doit avoir une entree dans le CHANGELOG (section "Non publie").
-- La page Pages (`index.html`) reflète le README : la mettre a jour en cas de changement visible.
+- La page Pages (`index.html`) reflete le README : la mettre a jour en cas de changement visible.
 - Le README mentionne l'aide de l'IA (code, images, documentation) : garder cette mention a jour.
 
 ## Assets
