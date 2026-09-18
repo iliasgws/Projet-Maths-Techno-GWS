@@ -75,6 +75,16 @@ Ce fichier contient des donnees personnelles : il n'est jamais commite (voir `.g
 
 ## Installation
 
+Deux facons de lancer l'application.
+
+### Versions compilees (Windows, macOS, Linux)
+
+Des executables prets a l'emploi sont publies dans les [releases GitHub](https://github.com/iliasgws/Projet-Maths-Techno-GWS/releases) a chaque version (tag `v*`) : `Projet-Maths-Techno-windows.zip`, `Projet-Maths-Techno-macos.tar.gz` et `Projet-Maths-Techno-linux.tar.gz`. Ils ne demandent ni Python ni installation : extraire l'archive puis lancer l'executable.
+
+Sur macOS, le premier lancement peut demander une autorisation (application non signee) : clic droit puis Ouvrir.
+
+### Depuis les sources
+
 Prerequis : Python 3.10 ou plus recent. Sur certaines distributions Linux, le paquet `python3-tk` doit etre installe separement.
 
 ```bash
@@ -84,15 +94,26 @@ python -m pip install -r requirements.txt
 python main.py
 ```
 
+## Tests
+
+Un test d'interface pilote par programme verifie les parcours principaux (validation, ajout, modification, suppression, synchronisation du tableau) sans cliquer :
+
+```bash
+python tests/test_gui.py
+```
+
 ## Structure du depot
 
 ```text
 Projet-Maths-Techno-GWS/
 ├── main.py                 # application complete (logique + interface)
+├── tests/
+│   └── test_gui.py         # test d'interface pilote par programme
 ├── requirements.txt        # openpyxl uniquement
 ├── assets/                 # icones de la fenetre
 ├── data/
 │   └── notes.xlsx          # cree automatiquement, jamais commite
+├── .github/workflows/      # CI, pages, release
 ├── CHANGELOG.md            # historique des versions
 ├── CONTRIBUTING.md         # guide de contribution
 ├── LICENSE                 # licence MIT

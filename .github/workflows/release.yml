@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artefact: Projet-Maths-Techno-linux
+            fichier: Projet-Maths-Techno-linux.tar.gz
+          - os: windows-latest
+            artefact: Projet-Maths-Techno-windows
+            fichier: Projet-Maths-Techno-windows.zip
+          - os: macos-latest
+            artefact: Projet-Maths-Techno-macos
+            fichier: Projet-Maths-Techno-macos.tar.gz
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install openpyxl pyinstaller
+
+      - name: Build executable
+        run: pyinstaller --name Projet-Maths-Techno --windowed --onefile --icon assets/icon.ico main.py
+
+      - name: Package (Linux, macOS)
+        if: runner.os != 'Windows'
+        run: |
+          cd dist
+          tar czf ${{ matrix.fichier }} Projet-Maths-Techno
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path dist/Projet-Maths-Techno.exe -DestinationPath dist/${{ matrix.fichier }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artefact }}
+          path: dist/${{ matrix.fichier }}
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: dist
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
