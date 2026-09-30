@@ -82,106 +82,104 @@ a { color: var(--accent); }
 
 <header class="hero">
   <h1>Projet Maths-Techno</h1>
-  <p>Application de bureau pour saisir les notes des eleves, calculer leur moyenne et les enregistrer dans un fichier Excel.</p>
+  <p>Application de bureau pour saisir les notes des eleves, calculer leur moyenne et les enregistrer dans un fichier Excel. Hors ligne, simple a utiliser.</p>
 </header>
 
 <nav class="sommaire">
   <strong>Sommaire</strong>
   <ul>
-    <li><a href="#pourquoi">Pourquoi cette application</a></li>
-    <li><a href="#fonctionnement">Fonctionnement</a></li>
-    <li><a href="#donnees">Donnees enregistrees</a></li>
+    <li><a href="#demarrage">Demarrage rapide</a></li>
+    <li><a href="#pourquoi">A quoi sert l'application</a></li>
+    <li><a href="#installation">Installer l'application</a></li>
+    <li><a href="#premiers">Premiers pas</a></li>
+    <li><a href="#utiliser">Utiliser l'application</a></li>
     <li><a href="#regles">Regles de saisie</a></li>
-    <li><a href="#fichier">Fichier de donnees</a></li>
-    <li><a href="#installation">Installation</a></li>
-    <li><a href="#statut">Statut du projet</a></li>
-    <li><a href="#contribuer">Contribuer</a></li>
+    <li><a href="#fichier">Ou sont mes notes</a></li>
+    <li><a href="#depannage">En cas de probleme</a></li>
+    <li><a href="#contribuer">Pour les contributeurs</a></li>
   </ul>
 </nav>
 
 <main>
 
+<section id="demarrage">
+  <h2>Demarrage rapide</h2>
+  <ol>
+    <li>Telechargez l'archive pour votre systeme dans les <a href="https://github.com/iliasgws/Projet-Maths-Techno-GWS/releases">releases</a>.</li>
+    <li>Extrayez l'archive, puis lancez <code>Projet-Maths-Techno</code> en double-cliquant dessus.</li>
+    <li>Remplissez le formulaire et cliquez sur <code>Ajouter</code> : c'est tout.</li>
+  </ol>
+</section>
+
 <section id="pourquoi">
-  <h2>Pourquoi cette application</h2>
-  <p>Saisir les notes directement dans Excel expose a des erreurs : du texte a la place d'un nombre, une note hors limite, une formule effacee ou la mauvaise ligne modifiee. L'application sert d'intermediaire : elle verifie chaque donnee avant d'ecrire dans le fichier, qui reste la seule source de verite.</p>
-</section>
-
-<section id="fonctionnement">
-  <h2>Fonctionnement</h2>
-  <p>La fenetre comporte un formulaire et un tableau :</p>
-  <ul>
-    <li><strong>Formulaire</strong> : le nom (champ texte), la classe (liste : <code>CE6</code>, <code>1AC</code>, <code>2AC</code>, <code>3AC</code>, <code>TCS</code>, <code>1BAC</code>, <code>2BAC</code>), la lettre (liste : <code>A</code>, <code>B</code>, <code>C</code>) et les trois notes sur 20 (mathematiques, sciences, histoire). La virgule decimale est acceptee, par exemple <code>12,5</code>.</li>
-    <li><strong>Boutons</strong> : <code>Ajouter</code>, <code>Modifier</code>, <code>Supprimer</code> et <code>Vider</code> le formulaire.</li>
-    <li><strong>Tableau</strong> : la liste complete des eleves avec leur moyenne, rechargee depuis Excel.</li>
-  </ul>
-  <p>Un clic sur une ligne recopie l'eleve dans le formulaire : il suffit de corriger puis de cliquer sur <code>Modifier</code>, ou de cliquer sur <code>Supprimer</code>.</p>
-  <p>L'eleve est stocke sous la forme <code>2BAC-B</code> (classe et lettre assemblees). L'interface n'est rafraichie qu'apres une sauvegarde reussie du fichier.</p>
-</section>
-
-<section id="donnees">
-  <h2>Donnees enregistrees</h2>
-  <p>Chaque eleve correspond a une ligne de la feuille <code>Notes</code> du classeur <code>data/notes.xlsx</code>.</p>
-  <table>
-    <tr><th>Colonne</th><th>Contenu</th></tr>
-    <tr><td><code>ID</code></td><td>numero unique attribue automatiquement a la creation</td></tr>
-    <tr><td><code>Nom</code></td><td>nom complet de l'eleve</td></tr>
-    <tr><td><code>Classe</code></td><td>classe et lettre de l'eleve, par exemple <code>2BAC-B</code></td></tr>
-    <tr><td><code>Mathematiques</code></td><td>note sur 20</td></tr>
-    <tr><td><code>Sciences</code></td><td>note sur 20</td></tr>
-    <tr><td><code>Histoire</code></td><td>note sur 20</td></tr>
-    <tr><td><code>Moyenne</code></td><td>moyenne simple, arrondie a deux decimales</td></tr>
-  </table>
-  <p>La moyenne est calculee ainsi : <code>moyenne = (mathematiques + sciences + histoire) / 3</code></p>
-</section>
-
-<section id="regles">
-  <h2>Regles de saisie</h2>
-  <p>Avant tout enregistrement, le programme verifie que :</p>
-  <ul>
-    <li>le nom n'est pas vide ;</li>
-    <li>la classe et la lettre sont choisies dans les listes ;</li>
-    <li>les trois notes sont renseignees et comprises entre 0 et 20 ;</li>
-    <li>les decimaux avec virgule sont acceptes (<code>12,5</code>) ;</li>
-    <li>l'eleve n'existe pas deja dans la meme classe (unicite <code>Nom + Classe</code>).</li>
-  </ul>
-  <p>Si une donnee est incorrecte, un message designe le champ a corriger et rien n'est enregistre.</p>
-</section>
-
-<section id="fichier">
-  <h2>Fichier de donnees</h2>
-  <ul>
-    <li>Au premier lancement, l'application cree <code>data/notes.xlsx</code> avec l'entete.</li>
-    <li>A chaque ajout, modification ou suppression : verification des donnees, calcul de la moyenne, ecriture dans Excel, rechargement du tableau.</li>
-    <li>Si le fichier est ouvert dans Excel, introuvable ou illisible, l'application affiche une erreur claire et reste ouverte.</li>
-  </ul>
-  <p>Ce fichier contient des donnees personnelles : il n'est jamais commite.</p>
+  <h2>A quoi sert l'application</h2>
+  <p>L'application verifie les donnees avant de les ecrire dans Excel, calcule la moyenne automatiquement et garde le fichier <code>data/notes.xlsx</code> comme seule source de verite.</p>
 </section>
 
 <section id="installation">
-  <h2>Installation</h2>
-  <p>Des executables prets a l'emploi (Windows, macOS, Linux) sont publies dans les <a href="https://github.com/iliasgws/Projet-Maths-Techno-GWS/releases">releases GitHub</a> a chaque version : extraire l'archive puis lancer l'executable. Sur macOS, clic droit puis Ouvrir au premier lancement.</p>
-  <p>Ou depuis les sources. Prerequis : Python 3.10 ou plus recent. Sur certaines distributions Linux, le paquet <code>python3-tk</code> doit etre installe separement.</p>
+  <h2>Installer l'application</h2>
+  <p>Version prete a l'emploi (Windows, macOS, Linux) disponible sur <a href="https://github.com/iliasgws/Projet-Maths-Techno-GWS/releases">GitHub Releases</a>. Sur macOS : clic droit puis Ouvrir au premier lancement.</p>
+  <p>Ou depuis les sources : Python 3.10+ puis</p>
   <pre><code>git clone https://github.com/iliasgws/Projet-Maths-Techno-GWS.git
 cd Projet-Maths-Techno-GWS
 python -m pip install -r requirements.txt
 python main.py</code></pre>
-  <p>Test de l'interface sans cliquer : <code>python tests/test_gui.py</code></p>
 </section>
 
-<section id="statut">
-  <h2>Statut du projet</h2>
-  <p>Le MVP est fonctionnel : saisie, validation, calcul de la moyenne, enregistrement Excel, modification et suppression. Les evolutions passees et a venir sont listees dans le <a href="https://github.com/iliasgws/Projet-Maths-Techno-GWS/blob/main/CHANGELOG.md">CHANGELOG</a>.</p>
+<section id="premiers">
+  <h2>Premiers pas</h2>
+  <ul>
+    <li>Nom, classe et lettre a choisir dans les listes.</li>
+    <li>Trois notes sur 20, virgule ou point acceptes (<code>12,5</code>).</li>
+    <li>Cliquez sur <code>Ajouter</code> pour enregistrer, <code>Vider</code> pour recommencer.</li>
+  </ul>
+</section>
+
+<section id="utiliser">
+  <h2>Utiliser l'application</h2>
+  <table>
+    <tr><th>Bouton</th><th>Action</th></tr>
+    <tr><td><code>Ajouter</code></td><td>Enregistre l'eleve saisi</td></tr>
+    <tr><td><code>Modifier</code></td><td>Modifie l'eleve selectionne dans le tableau</td></tr>
+    <tr><td><code>Supprimer</code></td><td>Supprime l'eleve selectionne (confirmation)</td></tr>
+    <tr><td><code>Vider</code></td><td>Vide le formulaire et deselectionne</td></tr>
+  </table>
+  <p>Cliquez sur une ligne du tableau pour la recopier dans le formulaire et la corriger.</p>
+</section>
+
+<section id="regles">
+  <h2>Regles de saisie</h2>
+  <ul>
+    <li>Nom non vide.</li>
+    <li>Classe et lettre choisies dans les listes.</li>
+    <li>Notes entre 0 et 20 (virgule ou point acceptes).</li>
+    <li>Unicite <code>Nom + Classe</code> (classe et lettre assemblees).</li>
+  </ul>
+</section>
+
+<section id="fichier">
+  <h2>Ou sont mes notes</h2>
+  <p>Les notes sont dans <code>data/notes.xlsx</code>, feuille <code>Notes</code>. Colonnes : <code>ID</code>, <code>Nom</code>, <code>Classe</code> (ex. <code>2BAC-B</code>), <code>Mathematiques</code>, <code>Sciences</code>, <code>Histoire</code>, <code>Moyenne</code> (arrondie a deux decimales). Moyenne = (M + S + H)/3.</p>
+</section>
+
+<section id="depannage">
+  <h2>En cas de probleme</h2>
+  <ul>
+    <li>Fichier ouvert dans Excel : fermez-le puis reessayez.</li>
+    <li>macOS (application non signee) : clic droit puis Ouvrir.</li>
+    <li>Linux/Tkinter : <code>sudo apt install python3-tk</code>.</li>
+  </ul>
 </section>
 
 <section id="contribuer">
-  <h2>Contribuer</h2>
-  <p>Les contributions sont bienvenues. Consultez le <a href="https://github.com/iliasgws/Projet-Maths-Techno-GWS/blob/main/CONTRIBUTING.md">guide de contribution</a> pour le workflow (branches, pull requests), le style des commits et les verifications a passer avant de pousser.</p>
+  <h2>Pour les contributeurs</h2>
+  <p>Le depot comprend <code>main.py</code>, des tests dans <code>tests/</code>, <code>requirements.txt</code> (openpyxl uniquement), un <a href="https://github.com/iliasgws/Projet-Maths-Techno-GWS/blob/main/CHANGELOG.md">CHANGELOG</a> et un <a href="https://github.com/iliasgws/Projet-Maths-Techno-GWS/blob/main/CONTRIBUTING.md">guide de contribution</a>. Test : <code>python tests/test_gui.py</code>.</p>
 </section>
 
 </main>
 
 <footer>
-  <p>Projet Maths-Techno, par Ilias Mouhcine. Distribue sous <a href="https://github.com/iliasgws/Projet-Maths-Techno-GWS/blob/main/LICENSE">licence MIT</a>.</p>
+  <p>Projet Maths-Techno. Distribue sous <a href="https://github.com/iliasgws/Projet-Maths-Techno-GWS/blob/main/LICENSE">licence MIT</a>. Code, images et documentation produits avec l'aide d'une intelligence artificielle.</p>
 </footer>
 
 </body>
